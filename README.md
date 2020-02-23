@@ -12,6 +12,13 @@ npm i jsdom
 npm i canvas
 ```
 
+## Install
+Use this git project install:
+
+```bash
+npm i git+https://git@github.com/milnomada/text-image.git
+```
+
 ## Usage
 
 Recommended setup:  
