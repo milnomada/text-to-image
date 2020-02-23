@@ -5,8 +5,9 @@ Ported from [text-edit](https://github.com/zonayedpca/text-image) and modified t
 
 ## Dependencies
 It makes use of document and window from [jsdom](https://github.com/jsdom/jsdom) project.  
-For the `offline` image render, it draws on [canvas](https://github.com/Automattic/node-canvas), the jsdom understands that
-canvas is loaded in the project, see jsdom canvas [integration](https://github.com/jsdom/jsdom#canvas-support).  
+For the `offline` image render, it draws on [canvas](https://github.com/Automattic/node-canvas), the jsdom module understands that
+canvas is loaded in the project.  
+See more about jsdom canvas integration [here](https://github.com/jsdom/jsdom#canvas-support).  
 
 ```bash
 npm i jsdom
