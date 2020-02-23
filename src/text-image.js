@@ -82,18 +82,18 @@ module.exports = function (document, window) {
         return img;
     }
 
-    TextImage.prototype.toFile = function(message, filename) {
+    TextImage.prototype.toFile = function(message, filename, callback) {
       convert.call(this, message);
 
       var img = new Image();
       img.src = canvas.toDataURL();
-      console.log(img.src)
       var data = img.src.replace(/^data:image\/\w+;base64,/, "");
 
       var buf = new Buffer(data, 'base64');
       fs.writeFile(filename, buf, function(err, d){
         if (err) throw err
-        console.log('File saved.')
+        if(callback)
+          callback()
       });
     }
 
@@ -115,89 +115,85 @@ module.exports = function (document, window) {
        * context reference
        * https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D
        */
-      console.log("convert", message);
-        message = String(message);
-        message = message.replace(/\\n/g, "\n")
-        
-        pre.innerHTML = message;
-        pre.innerText = message;
-        pre.setAttribute('style', this._style);
-        
-        document.body.append(pre);
-        console.log("convert >>", document.documentElement.outerHTML);
+      // console.log("convert", message);
+      message = String(message);
+      message = message.replace(/\\n/g, "\n")
+      
+      pre.innerHTML = message;
+      pre.innerText = message;
+      pre.setAttribute('style', this._style);
+      
+      document.body.append(pre);
+      // console.log("convert >>", document.documentElement.outerHTML);
 
-        var lines = message.split('\n'),
-            x = this.style.stroke,
-            y = pre.offsetHeight / lines.length || this.style.size,
-            paddingTop = this.style.paddingTop || 2 * this.style.size, 
-            paddingLeft = this.style.paddingLeft || paddingTop,
-            base = y * 0.1,
-            offset;
+      var lines = message.split('\n'),
+          x = this.style.stroke,
+          y = pre.offsetHeight / lines.length || this.style.size,
+          paddingTop = this.style.paddingTop || 2 * this.style.size, 
+          paddingLeft = this.style.paddingLeft || paddingTop,
+          base = y * 0.1,
+          offset;
 
-        console.log(x, y, lines.length, _style.size * lines.length)
-        
-        canvas.width = pre.offsetWidth + (getLongestSize(lines) * (this.style.size * 0.6));
-        canvas.height = pre.offsetHeight || _style.size * lines.length;
+      // console.log(x, y, lines.length, _style.size * lines.length)
+      canvas.width = pre.offsetWidth + (getLongestSize(lines) * (this.style.size * 0.6));
+      canvas.height = pre.offsetHeight || _style.size * lines.length;
 
-        canvas.width += 2 * paddingLeft
-        canvas.height += 2 * paddingTop
+      canvas.width += 2 * paddingLeft
+      canvas.height += 2 * paddingTop
 
-        console.log(pre.offsetWidth, pre.offsetHeight, lines, canvas.width, canvas.height)
+      context.clearRect(0, 0, canvas.width, canvas.height);
+      // console.log("canvas", canvas.width, canvas.height, this.style.align);
+      
+      context.fillStyle = this.style.background;
+      context.beginPath();
+      context.fillRect(0, 0, canvas.width, canvas.height);
+      context.fill();
 
-        context.clearRect(0, 0, canvas.width, canvas.height);
-        console.log("canvas", canvas.width, canvas.height, this.style.align);
-        context.fillStyle = this.style.background;
-        context.beginPath();
-        context.fillRect(0, 0, canvas.width, canvas.height);
-        context.fill();
+      var context_font = '';
+      // add bold/italic
+      if (this.style.italic) {
+          context_font += 'italic ';
+      }
+      if (this.style.bold) {
+          context_font += 'bold ';
+      }
+      // append size, font
+      context_font += this.style.size + 'px ' + this.style.font;
+      context.font = context_font;
+      context.textAlign = this.style.align;
+      context.lineWidth = this.style.stroke;
+      context.strokeStyle = this.style.strokeColor;
+      context.fillStyle = this.style.color;
+      switch (context.textAlign) {
+          case 'center':
+              x = canvas.width / 2;
+              break;
+          case 'right':
+              x = canvas.width - x;
+              break;
+          case 'left':
+              x = x + paddingLeft;
+              break;
+      }
 
-        var context_font = '';
-        // add bold/italic
-        if (this.style.italic) {
-            context_font += 'italic ';
+      // Leave space at the top: 
+      // `total height minus the height of the text, divided by two`
+      offset = (canvas.height - ((y) * lines.length)) / 2
+
+      lines.forEach(function (line, i) {
+
+        if (this.style.stroke) {
+            context.strokeText(line, x, y * (i + 1) - base);
         }
-        if (this.style.bold) {
-            context_font += 'bold ';
-        }
-        // append size, font
-        context_font += this.style.size + 'px ' + this.style.font;
-        context.font = context_font;
-        context.textAlign = this.style.align;
-        context.lineWidth = this.style.stroke;
-        context.strokeStyle = this.style.strokeColor;
-        context.fillStyle = this.style.color;
-        switch (context.textAlign) {
-            case 'center':
-                x = canvas.width / 2;
-                break;
-            case 'right':
-                x = canvas.width - x;
-                break;
-            case 'left':
-                x = x + paddingLeft;
-                break;
-        }
+        context.fillText(line, x, offset + (y * (i + 1) - base));
+        // console.log(line, x, y * (i + 1) - base)
+      }.bind(this));
 
-        // Leave space at the top: 
-        // `total height minus the height of the text, divided by two`
-        offset = (canvas.height - ((y) * lines.length)) / 2
-
-        lines.forEach(function (line, i) {
-
-          if (this.style.stroke) {
-              context.strokeText(line, x, y * (i + 1) - base);
-          }
-          context.fillText(line, x, offset + (y * (i + 1) - base));
-          console.log(line, x, y * (i + 1) - base)
-        }.bind(this));
-
-        // add text to context
-        context.fill();
-        // console.log('<img src="' + canvas.toDataURL() + '" />')
-        document.body.removeChild(pre);
+      // add text to context
+      context.fill();
+      document.body.removeChild(pre);
     }
 
     window.TextImage = TextImage
-
     return TextImage
 }
