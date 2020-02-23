@@ -4,8 +4,9 @@ Utility to generate images with text
 Ported from [text-edit](https://github.com/zonayedpca/text-image) and modified to render images server side using node.js libs  
 
 ## Dependencies
-It accepts document and window from [jsdom](https://github.com/jsdom/jsdom)  
-It makes use of [canvas](https://github.com/Automattic/node-canvas) so jsdom makes use of it when loading the Image
+It makes use of document and window from [jsdom](https://github.com/jsdom/jsdom) project.  
+For the `offline` image render, it draws on [canvas](https://github.com/Automattic/node-canvas), the jsdom understands that
+canvas is loaded in the project, see jsdom canvas [integration](https://github.com/jsdom/jsdom#canvas-support).  
 
 ```bash
 npm i jsdom
@@ -39,4 +40,28 @@ global.Node     = window.Node;
 var TextImage = require('text-image')(document, window)
 ```
 
+## Style
 
+Configurable style properties:
+
+```js
+var 
+  style = {
+    font: 'serif',
+    align: 'center',
+    color: 'red',
+    size: 18,
+    background: 'white',
+    stroke: 1,
+    strokeColor: 'rgba(0, 0, 0, 0)',
+    lineHeight: '1.6em',
+    bold: true,
+    italic: true
+  },
+  textImage1 = TextImage(style),
+  text = "Ask Yourself:\nWould Would You Do\nIf Time Didn’t Matter?\nWhat Would You Do\nIf It Didn’t Exist?"
+  ;
+
+textImage1.setStyle(style);
+textImage1.toFile(text, "test.png");
+````
