@@ -165,7 +165,7 @@ module.exports = function (document, window) {
         x = canvas.width / 2;
         break;
       case 'right':
-        x = canvas.width - x;
+        x = canvas.width - (x + paddingLeft);
         break;
       case 'left':
         x = x + paddingLeft;
