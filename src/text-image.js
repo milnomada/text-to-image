@@ -134,7 +134,7 @@ module.exports = function (document, window) {
         offset;
 
     canvas.width = pre.offsetWidth + (getLongestSize(lines) * (this.style.size * 0.6));
-    canvas.height = pre.offsetHeight || _style.lineHeight * lines.length;
+    canvas.height = _style.lineHeight * lines.length;
 
     canvas.width += 2 * paddingLeft
     canvas.height += 2 * paddingTop
