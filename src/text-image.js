@@ -19,7 +19,7 @@ module.exports = function (document, window) {
         background: 'rgba(0, 0, 0, 0)',
         stroke: 0,
         strokeColor: '#FFFFFF',
-        lineHeight: 18,
+        lineHeight: Math.ceil(16 * 1.2),
         bold: false,
         italic: false
     },
@@ -54,7 +54,7 @@ module.exports = function (document, window) {
           this._style += 'bold ';
       }
       this._style +=  this.style.size + 'px ' + this.style.font + ';';
-      this._style += 'line-height:' + this.style.size * 1.2 + 'px;';
+      this._style += 'line-height:' + Math.ceil(this.style.size * 1.2) + 'px;';
       this._style += 'text-align: ' + this.style.align + ';';
       this._style += 'color: ' + this.style.color + ';';
       this._style += 'background-color: ' + this.style.background + ';';
@@ -134,7 +134,7 @@ module.exports = function (document, window) {
         offset;
 
     canvas.width = pre.offsetWidth + (getLongestSize(lines) * (this.style.size * 0.6));
-    canvas.height = pre.offsetHeight || _style.size * lines.length;
+    canvas.height = pre.offsetHeight || _style.lineHeight * lines.length;
 
     canvas.width += 2 * paddingLeft
     canvas.height += 2 * paddingTop
