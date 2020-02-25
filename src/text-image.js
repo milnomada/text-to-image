@@ -19,7 +19,7 @@ module.exports = function (document, window) {
         background: 'rgba(0, 0, 0, 0)',
         stroke: 0,
         strokeColor: '#FFFFFF',
-        lineHeight: '1.2em',
+        lineHeight: 18,
         bold: false,
         italic: false
     },
@@ -54,7 +54,7 @@ module.exports = function (document, window) {
           this._style += 'bold ';
       }
       this._style +=  this.style.size + 'px ' + this.style.font + ';';
-      this._style += 'line-height:' + this.style.lineHeight + ';';
+      this._style += 'line-height:' + this.style.size * 1.2 + 'px;';
       this._style += 'text-align: ' + this.style.align + ';';
       this._style += 'color: ' + this.style.color + ';';
       this._style += 'background-color: ' + this.style.background + ';';
