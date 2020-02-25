@@ -122,7 +122,7 @@ module.exports = function (document, window) {
     
     pre.innerHTML = message;
     pre.innerText = message;
-    pre.setAttribute('style', this._style);
+    pre.setAttribute('style', this.style);
     
     document.body.append(pre);
     var lines = message.split('\n'),
@@ -134,7 +134,7 @@ module.exports = function (document, window) {
         offset;
 
     canvas.width = pre.offsetWidth + (getLongestSize(lines) * (this.style.size * 0.6));
-    canvas.height = _style.lineHeight * lines.length;
+    canvas.height = this.style.lineHeight * lines.length;
 
     canvas.width += 2 * paddingLeft
     canvas.height += 2 * paddingTop
