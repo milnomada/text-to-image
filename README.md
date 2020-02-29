@@ -1,7 +1,7 @@
 # Text to Image
 
 Utility to generate images with text  
-Ported from [text-edit](https://github.com/zonayedpca/text-image) and modified to render images server side using node.js libs  
+Ported from [text-edit](https://github.com/zonayedpca/text-image) and modified to run the image render process server side using offline node.js dom management libraries.    
 
 ## Dependencies
 It makes use of document and window from [jsdom](https://github.com/jsdom/jsdom) project.  
@@ -18,7 +18,7 @@ npm i canvas
 Use this git project install:
 
 ```bash
-npm i git+https://git@github.com/milnomada/text-image.git
+npm i git+https://git@github.com/milnomada/text-to-image.git
 ```
 
 ## Usage
@@ -41,9 +41,32 @@ global.Node     = window.Node;
 var TextImage = require('text-image')(document, window)
 ```
 
-## Style
+### Style
 
-Configurable style properties:
+The rendered image can be customized in several ways
+
+### Font
+
+As text-to-image works with an input canvas component, it can be customized before it is sent to the image renderer.
+In node-canvas, there is a method useful to add fonts to the canvas renderer [registerFont](https://github.com/Automattic/node-canvas#registerfont).  
+
+Having ttf fonts locally donwloaded to the `./fonts` folder,  a simple example on how to add a font:
+
+```js
+const { registerFont, createCanvas } = require('canvas')
+registerFont('fonts/OdibeeSans-Regular.ttf', { family: 'Odibee' })
+
+var style = {
+  font: 'Odibee',
+  align: 'center',
+  ...
+}
+textImage1 = TextImage(style)
+````
+
+### Colors
+
+Other configurable style properties:
 
 ```js
 var 
@@ -55,7 +78,7 @@ var
     background: 'white',
     stroke: 1,
     strokeColor: 'rgba(0, 0, 0, 0)',
-    lineHeight: '1.6em',
+    lineHeight: Math.ceil(18 * 1.2),
     bold: true,
     italic: true
   },
