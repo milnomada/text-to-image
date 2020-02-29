@@ -41,7 +41,7 @@ global.Node     = window.Node;
 var TextImage = require('text-image')(document, window)
 ```
 
-### Style
+## Style
 
 The rendered image can be customized in several ways
 
@@ -53,8 +53,15 @@ In node-canvas, there is a method useful to add fonts to the canvas renderer [re
 Having ttf fonts locally donwloaded to the `./fonts` folder,  a simple example on how to add a font:
 
 ```js
+const jsdom = require('jsdom')
+const canvas = require('canvas')
 const { registerFont, createCanvas } = require('canvas')
+
+// done before loading jsdom
 registerFont('fonts/OdibeeSans-Regular.ttf', { family: 'Odibee' })
+
+const { JSDOM } = jsdom;
+var dom = new JSDOM(`<html><head><meta charset='utf-8'></head><body><p>Hello world</p></body></html>`);
 
 var style = {
   font: 'Odibee',
@@ -66,24 +73,34 @@ textImage1 = TextImage(style)
 
 ### Colors
 
+```js
+var style = {
+    color: 'rgb(23, 134, 67)',
+    background: '#ffffff',
+    strokeColor: 'rgba(0, 0, 0, 0)',
+    ...
+  }
+```
+
+### Other
+
 Other configurable style properties:
 
 ```js
-var 
-  style = {
+var style = {
     font: 'serif',
     align: 'center',
     color: 'red',
-    size: 18,
     background: 'white',
+    size: 18,
+    lineHeight: Math.ceil(18 * 1.2),
     stroke: 1,
     strokeColor: 'rgba(0, 0, 0, 0)',
-    lineHeight: Math.ceil(18 * 1.2),
     bold: true,
     italic: true
   },
   textImage1 = TextImage(style),
-  text = "Ask Yourself:\nWould Would You Do\nIf Time Didn’t Matter?\nWhat Would You Do\nIf It Didn’t Exist?"
+  text = "This is\na\nhighly customized\ntext image"
   ;
 
 textImage1.setStyle(style);
