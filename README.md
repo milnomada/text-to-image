@@ -1,6 +1,6 @@
 # Text to Image
 
-Utility to generate images with text  
+Node.js module to generate images with arbitrary text and colors  
 Ported from [text-edit](https://github.com/zonayedpca/text-image) and modified to run the image render process server side using offline node.js dom management libraries.    
 
 ## Dependencies
@@ -56,12 +56,17 @@ Having ttf fonts locally donwloaded to the `./fonts` folder,  a simple example o
 const jsdom = require('jsdom')
 const canvas = require('canvas')
 const { registerFont, createCanvas } = require('canvas')
+const { JSDOM } = jsdom;
 
 // done before loading jsdom
 registerFont('fonts/OdibeeSans-Regular.ttf', { family: 'Odibee' })
 
-const { JSDOM } = jsdom;
 var dom = new JSDOM(`<html><head><meta charset='utf-8'></head><body><p>Hello world</p></body></html>`);
+
+global.window   = dom.window;
+global.document = dom.window.document;
+global.Image    = window.Image;
+global.Node     = window.Node;
 
 var style = {
   font: 'Odibee',
@@ -69,7 +74,7 @@ var style = {
   ...
 }
 textImage1 = TextImage(style)
-````
+```
 
 ### Colors
 
@@ -82,18 +87,20 @@ var style = {
   }
 ```
 
-### Other
+### General Settings
 
 Other configurable style properties:
 
 ```js
-var style = {
+var
+  fontSize = 18,
+  style = {
     font: 'serif',
     align: 'center',
     color: 'red',
     background: 'white',
-    size: 18,
-    lineHeight: Math.ceil(18 * 1.2),
+    size: fontSize,
+    lineHeight: Math.ceil(fontSize * 1.2),
     stroke: 1,
     strokeColor: 'rgba(0, 0, 0, 0)',
     bold: true,
@@ -105,4 +112,4 @@ var style = {
 
 textImage1.setStyle(style);
 textImage1.toFile(text, "test.png");
-````
+```
