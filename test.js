@@ -29,5 +29,6 @@ var style = {
   text = "some good news"
   ;
 
+textImage1.setPadding(20, 15);
 textImage1.setStyle(style);
 textImage1.toFile(text, "test.png");
