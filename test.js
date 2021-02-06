@@ -26,7 +26,7 @@ var style = {
     italic: true
   },
   textImage1 = TextImage(style),
-  text = "some\ngood\nnews"
+  text = "some good news"
   ;
 
 textImage1.setStyle(style);

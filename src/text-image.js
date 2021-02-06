@@ -130,7 +130,7 @@ module.exports = function (document, window) {
         y = pre.offsetHeight / lines.length || this.style.size,
         paddingTop = this.style.paddingTop || 2 * this.style.size, 
         paddingLeft = this.style.paddingLeft || paddingTop,
-        base = y * 0.5,
+        base = y * 0.05,
         offset;
 
     canvas.width = pre.offsetWidth + (getLongestSize(lines) * (this.style.size * 0.6));
