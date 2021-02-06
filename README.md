@@ -1,7 +1,7 @@
 # Text to Image
 
 Node.js module to generate images with arbitrary text and colors  
-Ported from [text-edit](https://github.com/zonayedpca/text-image) and modified to run the image render process server side using offline node.js dom management libraries.    
+Ported from [text-edit](https://github.com/zonayedpca/text-image) and modified to run image render process as a backend application, including all necessary dom management libraries the web browser provides to front end application.
 
 ## Dependencies
 It makes use of document and window from [jsdom](https://github.com/jsdom/jsdom) project.  
@@ -38,7 +38,7 @@ global.Image    = window.Image;
 global.Node     = window.Node;
 
 // create new TextImage object
-var TextImage = require('text-image')(document, window)
+var TextImage = require('text-to-image')(document, window)
 ```
 
 ## Style
@@ -68,6 +68,7 @@ global.document = dom.window.document;
 global.Image    = window.Image;
 global.Node     = window.Node;
 
+var TextImage = require('text-to-image')(document, window)
 var style = {
   font: 'Odibee',
   align: 'center',

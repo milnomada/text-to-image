@@ -6,7 +6,7 @@ const {
 const del = require('del')
 const uglify = require('gulp-uglify')
 const replace = require('gulp-replace')
-const jsdom = require('jsdom')
+const rename = require('gulp-rename')
 const fs = require('fs')
 const PROJECT = JSON.parse(fs.readFileSync('./package.json'))
 const DATE = new Date()
@@ -19,6 +19,7 @@ function clean(cb) {
 function build_dist(cb) {
   src('src/text-image.js')
     .pipe(uglify())
+    .pipe(rename('text-to-image.js'))
     .pipe(dest('dist/'))
     cb()
 }

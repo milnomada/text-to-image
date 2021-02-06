@@ -1,5 +1,5 @@
 /**
- * Text to Image
+ * TextImage
  * @param  {[type]} document [description]
  * @param  {[type]} window   [description]
  * @return {[type]}          [description]
