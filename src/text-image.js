@@ -173,11 +173,11 @@ module.exports = function (document, window) {
     }
 
     // Leave space at the top: 
-    // `total height minus the height of the text, divided by two`
+    // `total height minus the height of the text, --divided by two--`
     offset = (canvas.height - ((y) * lines.length))
 
     lines.forEach(function(line, i) {
-      if(this.style.stroke) {
+      if(this.style.stroke > 0) {
         context.strokeText(line, x, y * (i + 1) - base);
       }
       context.fillText(line, x, offset + (y * (i + 1) - base));
